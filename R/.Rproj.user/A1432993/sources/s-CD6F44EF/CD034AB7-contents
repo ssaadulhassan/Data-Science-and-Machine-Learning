@@ -1,0 +1,48 @@
+library(readxl)
+x <- read_excel("data.xlsx", sheet = "data2", 
+                   col_types = c("text", "numeric", "numeric", 
+                                 "text"))
+View(data)
+
+install.packages("agricolae")
+library(agricolae)
+
+#boxplot
+boxplot(x$Height ~ x$Crop)
+
+# multiple comparison of means
+
+help("agricolae-package")
+
+# 1- Tukey.HSD test (Honestly significance difference)
+model <- aov(Height~ Crop, data=x)
+out <- HSD.test(model,"Crop",group=TRUE,console=TRUE,main="Tukey Tiki Test")
+plot(out)
+
+# 2- Tukey.LSD test (Least significance difference)
+model <- aov(Height~ Crop, data=x)
+out <- LSD.test(model,"Crop",group=TRUE,console=TRUE,main=" LSD Test")
+plot(out)
+
+# 3- Duncan Test
+model <- aov(Height~ Crop, data=x)
+out <- duncan.test(model,"Crop",group=TRUE,console=TRUE,main=" LSD Test")
+plot(out)
+
+
+# grouping
+boxplot(Height ~ Crop * water, data=x)
+model1 <- aov (Height ~ Crop * water, data=x)
+out1 <- HSD.test(model1, c("Crop","water"), group = TRUE, console= TRUE,
+                 main="Group Tukey Test")
+
+# plot with setting of labels
+plot(out1,horiz = TRUE,las=2)
+plot(out1,las=2)
+
+# save high q graph
+jpeg(file="graph/Tukey test.tiff",
+     width=6, height= 4, units="in",res=300)
+boxplot(Height ~ Crop * water, data=x, las=2, xlab="")
+dev.off()
+
