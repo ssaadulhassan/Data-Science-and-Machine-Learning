@@ -1,0 +1,41 @@
+library(readxl)
+my_data <- read_excel("data.xlsx", sheet = "data", 
+                      col_types = c("text", "numeric", "numeric"))
+View(my_data)
+
+#boxplot 
+boxplot(my_data$Height ~ my_data$Crop)
+
+# labelling
+boxplot(Height ~ Crop ,data=my_data)
+
+boxplot(Height ~ Crop , data=my_data, main= "Box plot of experiment ",
+        xlab= "Crop Type", ylab="Plant Height (cm)")
+
+#coloring
+boxplot(Height ~ Crop , data=my_data, main= "Box plot of experiment ",
+        xlab= "Crop Type", ylab="Plant Height (cm)",
+        col="Green", border="#7303fc")
+
+# grouping of treatment
+library(readxl)
+my_data2 <- read_excel("data.xlsx", sheet = "data2", 
+                       col_types = c("text", "numeric", "numeric", 
+                                     "text"))
+View(my_data2)
+
+# box plot with concept of hue 
+my_data2$Crop <- factor(my_data2$Crop, levels= c("Wheat","Maize","Rice ko Rika krdia","Potato"))
+boxplot(my_data2$Height ~ my_data2$Crop * my_data2$water, main="Boxplot of Experiment",
+        xlab = "Crop",ylab="Height",col="Blue", border="purple")
+
+
+
+
+
+
+
+
+
+
+
